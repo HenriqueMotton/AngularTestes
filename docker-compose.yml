@@ -1,0 +1,71 @@
+version: "3.7"
+
+services:
+  angular-service:
+    container_name: ng-docker-example
+    build: .
+    ports:
+      - "4201:80"
+    networks:
+      - backend_rede
+
+  postgres:
+    container_name: dbTeste
+    image: postgres:12
+    environment:
+      - POSTGRES_PASSWORD=p0stgr3s
+      - POSTGRES_USER=postgres
+    ports:
+      - 5433:5432
+    volumes:
+      - 'postgres_data:/var/lib/postgresql/data'
+    restart: unless-stopped
+    ulimits:
+      nofile:
+        soft: 20000
+        hard: 40000
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
+    networks:
+      - backend_rede
+
+  keycloak:
+    container_name: keycloakTeste
+    image: quay.io/keycloak/keycloak:15.0.2
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_SCHEMA: public
+      DB_PASSWORD: k3ycl04k
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      JAVA_OPTS: "-server -Xms64m -Xmx512m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m
+        -Dkeycloak.profile.feature.upload_scripts=enabled -Djava.net.preferIPv4Stack=true 
+        -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true --add-exports=java.base/sun.nio.ch=ALL-UNNAMED --add-exports=jdk.unsupported/sun.misc=ALL-UNNAMED --add-exports=jdk.unsupported/sun.reflect=ALL-UNNAMED
+        -Dkeycloak.migration.strategy=IGNORE_EXISTING -Dkeycloak.migration.dir=/opt/keycloak-realms/"
+    ports:
+      - 8089:8080
+    networks:
+      - backend_rede
+    external_links:
+      - dbTeste:postgres
+    volumes:
+      - ./realm:/opt/keycloak-realms/
+      - ./theme/changed:/opt/jboss/keycloak/themes/changed
+      - ./theme/sefaz-login:/opt/jboss/keycloak/themes/sefaz-login
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    name: postgres_data
+    driver: local
+
+networks:
+  backend_rede:
+    name: backend_rede
