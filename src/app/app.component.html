@@ -1,0 +1,68 @@
+<div class="container">
+  <div class="content" role="main">
+    <div class="card highlight-card card-small">
+      <h2>Testes Angular</h2>
+    </div>
+    <p>Bem vindo a página de testes com Angular, clique em um dos botões abaixo:</p>
+  </div>
+  <div class="containerBottons">
+    <Button type="button" class="btn btn-outline-primary" (click)="activeKeycloak()">Keycloak</Button>
+  </div>
+  <app-keycloak [statusKeycloak]="statusKeycloak" [isLogged]="isLogged" [dataUser]="dataUser" [meToken]="meToken"></app-keycloak>
+  <footer>
+    <p>{{ date }} </p>
+  </footer>
+</div>
+
+<style>
+  .containerBottons{
+    width: 100%;
+    margin-top: 10px;
+  }
+  :host {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 14px;
+    color: #333;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .container {
+    width: 80%;
+    margin: 0px auto;
+  }
+
+  .content {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 8px 0;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  footer {
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    line-height: 20px;
+    border-top: 1px solid #d4d4d5;
+    padding: 10px;
+  }
+
+  footer p {
+    width: 100%;
+    text-align: center;
+  }
+
+</style>

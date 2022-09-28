@@ -1,0 +1,57 @@
+<div class="container" *ngIf="statusKeycloak || isLogged">
+  <div class="content">
+    <h2>KEYCLOAK</h2>
+  </div>
+  <div class="containerBottons">
+    <Button *ngIf="isLogged" class="btn btn-outline-primary m-2" (click)="activeInfosUser()">Usuario</Button>
+    <Button *ngIf="!isLogged" class="btn btn-outline-primary m-2" (click)="initSession()">Login</Button>
+    <Button class="btn btn-outline-primary" (click)="finishSession()">Logout</Button>
+  </div>
+  <div *ngIf="statusUser">
+    <div>
+      <h3>Segue abaixo as informações do seu usuario:</h3>
+      <button  
+        (click)="collapse.toggle()" 
+        [attr.aria-expanded]="!isCollapsed"
+        aria-controls="collapseExample"
+        class="btn btn-outline-primary"
+      >{{ dataUser.email}}</button>
+    </div>
+    <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
+      <div class="card">
+        <div class="card-body">
+          Username: {{dataUser.username}}
+        </div>
+        <div class="card-body">
+          Nome: {{dataUser.firstName + dataUser.lastName}}
+        </div>
+        <div class="card-body">
+          Token: {{meToken}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .content {
+    width: 100%;
+  }
+  .containerBottons{
+    width: 100%;
+    margin-top: 10px;
+  }
+  .buttonStyle{
+    width: 100px;
+    height: 40px;
+    background-color: rgba(43, 62, 170, 0.692);
+    cursor: pointer;
+    color: white;
+    border-radius: 15px;
+    border-color: rgba(12, 16, 240, 0.973);
+    border-style: solid;
+  }
+  .marginRight{
+    margin-right: 10px;
+  }
+</style>
