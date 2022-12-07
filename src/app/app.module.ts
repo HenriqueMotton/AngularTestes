@@ -10,14 +10,12 @@ function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        url: "http://localhost:8088/auth",
+        url: "http://localhost:8089/auth",
         realm: "park-teste",
         clientId: "nuxt-test-client"
       },
       initOptions: {
         onLoad: 'check-sso',
-        silentCheckSsoRedirectUri:
-          window.location.origin + '/assets/silent-check-sso.html'
       }
     });
 }

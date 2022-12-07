@@ -48,7 +48,9 @@ services:
       JAVA_OPTS: "-server -Xms64m -Xmx512m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m
         -Dkeycloak.profile.feature.upload_scripts=enabled -Djava.net.preferIPv4Stack=true 
         -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true --add-exports=java.base/sun.nio.ch=ALL-UNNAMED --add-exports=jdk.unsupported/sun.misc=ALL-UNNAMED --add-exports=jdk.unsupported/sun.reflect=ALL-UNNAMED
-        -Dkeycloak.migration.strategy=IGNORE_EXISTING -Dkeycloak.migration.dir=/opt/keycloak-realms/"
+        -Dkeycloak.migration.strategy=OVERWRITE_EXISTING -Dkeycloak.migration.provider=dir -Dkeycloak.migration.dir=/opt/keycloak-realms/
+        -Dkeycloak.import=/opt/jboss/keycloak/imports/realm-export.json
+        "
     ports:
       - 8089:8080
     networks:
@@ -56,7 +58,7 @@ services:
     external_links:
       - dbTeste:postgres
     volumes:
-      - ./realm:/opt/keycloak-realms/
+      - ./imports:/opt/jboss/keycloak/imports
       - ./theme/changed:/opt/jboss/keycloak/themes/changed
       - ./theme/sefaz-login:/opt/jboss/keycloak/themes/sefaz-login
     restart: unless-stopped
